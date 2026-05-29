@@ -43,7 +43,22 @@ HWND hStaticMana;
 // ARQUIVO INI
 // ======================================================
 
-const wchar_t *arquivoINI = L"personagem.ini";
+wchar_t arquivoINI[MAX_PATH];
+
+// ======================================================
+// FUNÇÃO: Inicializar Caminho do arquivo INI
+// ======================================================
+void inicializarCaminhoINI()
+{
+    GetModuleFileNameW(NULL, arquivoINI, MAX_PATH);
+
+    wchar_t *barra = wcsrchr(arquivoINI, L'\\');
+    if (barra)
+    {
+        *(barra + 1) = L'\0';
+        wcscat(arquivoINI, L"personagem.ini");
+    }
+}
 
 // ======================================================
 // FUNÇÃO: Atualizar Status
@@ -323,11 +338,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd,
 // FUNÇÃO PRINCIPAL
 // ======================================================
 
-int WINAPI wWinMain(HINSTANCE hInstance,
-                    HINSTANCE hPrevInstance,
-                    PWSTR pCmdLine,
-                    int nCmdShow)
+int WINAPI WinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine,
+    int nCmdShow)
 {
+    inicializarCaminhoINI();
     const wchar_t CLASS_NAME[] = L"RPGManager";
 
     WNDCLASS wc = {0};
